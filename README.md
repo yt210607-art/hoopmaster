@@ -1,1 +1,1199 @@
-# hoopmaster
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>HoopMaster IL — Ultimate Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+/* ===== ROOT & RESET ===== */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --or:#FF5E14;--or2:#FF7A3D;--gold:#FFD166;
+  --bg:#07090F;--bg2:#0D1220;--card:#111827;--card2:#161F30;--card3:#1C2840;
+  --bd:#1E2D45;--bd2:#283D5A;--mut:#5A7090;--txt:#E8EEFF;--txt2:#A0B4CC;
+  --green:#16A34A;--green2:#22C55E;--blue:#2563EB;--blue2:#3B82F6;
+  --red:#DC2626;--red2:#EF4444;--purple:#7C3AED;--purple2:#A78BFA;
+  --gold2:#F59E0B;
+  --r8:8px;--r12:12px;--r16:16px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;direction:rtl}
+button,input,textarea,select{font-family:'Heebo',sans-serif}
+input[type=number]::-webkit-inner-spin-button{opacity:.4}
+
+/* ===== LAYOUT ===== */
+.app{max-width:430px;margin:0 auto;height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+/* ===== HEADER ===== */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--bd);flex-shrink:0;z-index:50}
+.hdr-inner{padding:10px 14px 0}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-ic{width:32px;height:32px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--txt)}
+.logo-text span{color:var(--or)}
+.hdr-right{display:flex;gap:6px;align-items:center}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.badge-or{background:var(--or);color:#fff}
+.badge-bl{background:#1E3A5F;color:#93C5FD;display:none}
+.badge-green{background:#14532D;color:#86EFAC}
+
+/* ===== BOTTOM NAV ===== */
+.bnav{display:flex;background:var(--bg2);border-top:1px solid var(--bd);flex-shrink:0}
+.bnt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px 10px;cursor:pointer;color:var(--mut);font-size:10px;font-weight:600;gap:3px;background:none;border:none;transition:.15s;position:relative}
+.bnt.on{color:var(--or)}
+.bnt.on::after{content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--or);border-radius:1px}
+.bnt i{font-size:20px}
+
+/* ===== NAV TABS (sub) ===== */
+.ntabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 14px;gap:0}
+.ntabs::-webkit-scrollbar{display:none}
+.ntab{flex-shrink:0;padding:7px 12px;font-size:11px;font-weight:700;color:var(--mut);cursor:pointer;border-top:2px solid transparent;transition:.12s;background:none;border-bottom:none;border-left:none;border-right:none;white-space:nowrap;font-family:'Heebo',sans-serif}
+.ntab.on{color:var(--or);border-top-color:var(--or)}
+
+/* ===== CONTENT AREA ===== */
+.pages{flex:1;overflow:hidden;position:relative}
+.pg{display:none;height:100%;overflow-y:auto;padding:10px 12px 20px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.pg.on{display:block}
+
+/* ===== SECTION LABEL ===== */
+.sec{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:1px;padding:10px 0 5px}
+
+/* ===== INPUTS ===== */
+.inp{background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:8px 11px;color:var(--txt);font-size:13px;width:100%;direction:rtl;transition:.15s}
+.inp:focus{outline:none;border-color:var(--or);background:var(--card2)}
+.inp::placeholder{color:var(--mut)}
+
+/* ===== CHIPS ===== */
+.chiprow{display:flex;gap:5px;overflow-x:auto;padding-bottom:5px;margin-bottom:6px;scrollbar-width:none}
+.chiprow::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:5px 11px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--bd);background:var(--card);color:var(--mut);transition:.12s;font-family:'Heebo',sans-serif}
+.chip.on{background:var(--or);border-color:var(--or);color:#fff}
+.chip.bl.on{background:#1E3A5F;border-color:var(--blue2);color:#93C5FD}
+
+/* ===== INFO BAR ===== */
+.infobar{background:var(--card2);border:1px solid #6366F1;border-radius:var(--r8);padding:8px 11px;margin-bottom:8px;font-size:12px;color:#A5B4FC;display:none;line-height:1.5}
+
+/* ===== AI BOX ===== */
+.ai-box{background:linear-gradient(135deg,#1a1a3e,#0f1020);border:1px solid #6366F1;border-radius:var(--r12);padding:11px;margin-bottom:10px}
+.ai-title{font-size:11px;font-weight:700;color:#A5B4FC;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.ai-item{background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:7px 10px;margin-bottom:4px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.12s}
+.ai-item:hover{background:var(--card2)}
+.ai-item-info{flex:1}
+.ai-item-name{font-size:12px;font-weight:700;color:var(--txt)}
+.ai-item-sub{font-size:10px;color:var(--mut)}
+.ai-add{background:#4338CA;color:#C7D2FE;border:none;border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif}
+
+/* ===== DRILL CARDS ===== */
+.dcard{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px 12px;margin-bottom:7px;cursor:pointer;transition:.12s;position:relative}
+.dcard:active{background:var(--card2);transform:scale(.99)}
+.dcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:5px}
+.dcard-name{font-size:13px;font-weight:700;flex:1;line-height:1.3;color:var(--txt)}
+.lv{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0}
+.lv0{background:#14532D;color:#86EFAC}.lv1{background:#7C2D12;color:#FCD34D}.lv2{background:#7F1D1D;color:#FCA5A5}
+.dtags{display:flex;flex-wrap:wrap;gap:3px;margin:4px 0 5px}
+.dtag{background:var(--card2);border:1px solid var(--bd);color:var(--mut);font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600}
+.dtag.age{background:#1A1E3E;border-color:#6366F1;color:#A5B4FC}
+.dtag.cross{background:#0F2E1A;border-color:#16A34A;color:#86EFAC}
+.ddesc{font-size:12px;color:var(--mut);line-height:1.4;margin-bottom:7px}
+.dfoot{display:flex;align-items:center;justify-content:space-between}
+.dstats{display:flex;gap:9px}
+.dst{font-size:11px;color:var(--mut);display:flex;align-items:center;gap:3px}
+.dst strong{color:var(--txt)}
+.dbtn-row{display:flex;gap:4px}
+.btn-add{background:#1E3A5F;color:#93C5FD;border:1px solid #2563EB;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;transition:.12s;font-family:'Heebo',sans-serif}
+.btn-add.on{background:#14532D;color:#86EFAC;border-color:#16A34A}
+.btn-view{background:var(--or);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif}
+.btn-fav{background:none;border:1px solid var(--bd);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mut);font-size:14px;transition:.12s;font-family:'Heebo',sans-serif}
+.btn-fav.on{color:#FFD166;border-color:#FFD166}
+
+/* ===== MODAL ===== */
+.modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;justify-content:center;max-width:430px;margin:0 auto}
+.modal-bg.on{display:flex}
+.modal{background:var(--card);border-radius:18px 18px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:18px 16px 24px;position:relative;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.modal-handle{width:36px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 14px}
+.mh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.mt{font-size:16px;font-weight:900;color:var(--txt)}
+.ms{font-size:11px;color:var(--mut);margin-top:3px}
+.mcls{background:var(--card2);border:1px solid var(--bd);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mut);flex-shrink:0;font-family:'Heebo',sans-serif;font-size:16px}
+.vthmb{background:var(--card2);border:1px solid var(--bd);border-radius:var(--r12);height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-decoration:none;margin-bottom:12px;transition:.15s}
+.vthmb:hover{border-color:var(--or)}
+.vthmb i{font-size:38px;color:var(--or)}
+.vthmb span{font-size:12px;color:var(--mut)}
+.ml{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;margin-top:10px}
+.mv{font-size:13px;color:var(--txt);line-height:1.55;margin-bottom:8px}
+.slist{list-style:none;counter-reset:s;margin-bottom:10px}
+.slist li{counter-increment:s;position:relative;padding:7px 26px 7px 0;font-size:12px;color:var(--txt);border-bottom:1px solid var(--bd)}
+.slist li::before{content:counter(s);position:absolute;right:0;top:50%;transform:translateY(-50%);width:18px;height:18px;background:var(--or);color:#fff;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ntarea{width:100%;background:var(--card2);border:1px solid var(--bd);border-radius:var(--r8);color:var(--txt);font-family:'Heebo',sans-serif;font-size:12px;padding:8px;min-height:60px;resize:none;direction:rtl}
+.ntarea:focus{outline:none;border-color:var(--or)}
+.btn-pri{width:100%;background:var(--or);color:#fff;border:none;border-radius:var(--r8);padding:11px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;font-family:'Heebo',sans-serif;margin-top:6px}
+.btn-pri:hover{background:var(--or2)}
+.btn-sec{width:100%;background:var(--card2);color:var(--txt);border:1px solid var(--bd);border-radius:var(--r8);padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:5px;font-family:'Heebo',sans-serif}
+.btn-sm{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;border:none}
+
+/* ===== PLAN ===== */
+.plan-empty{text-align:center;padding:22px;color:var(--mut);font-size:13px;border:1.5px dashed var(--bd);border-radius:var(--r12);margin-bottom:8px}
+.plan-item{background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:9px 10px;margin-bottom:5px;display:flex;align-items:center;gap:7px;transition:.12s}
+.plan-item.dragging{opacity:.5}
+.pnum{width:20px;height:20px;background:var(--or);border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.plan-dur input{width:32px;background:var(--card2);border:1px solid var(--bd);border-radius:4px;color:var(--txt);font-family:'Heebo',sans-serif;font-size:11px;padding:3px 4px;text-align:center;direction:ltr}
+.plan-rm{background:none;border:none;color:var(--red2);cursor:pointer;font-size:14px;padding:2px;font-family:'Heebo',sans-serif}
+.plan-total{background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:10px;text-align:center;font-size:12px;color:var(--mut);margin-bottom:8px}
+.shr-row{display:flex;gap:5px;margin-bottom:10px}
+.shr-btn{flex:1;background:var(--card2);color:var(--txt);border:1px solid var(--bd);border-radius:var(--r8);padding:7px 4px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Heebo',sans-serif;transition:.12s}
+.shr-btn:hover{border-color:var(--or);color:var(--or)}
+
+/* ===== TIMER ===== */
+.timer-ring-wrap{text-align:center;margin-bottom:12px;position:relative}
+.timer-ring-wrap svg{transform:rotate(-90deg)}
+.timer-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-big{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--or);letter-spacing:2px;line-height:1}
+.timer-sub{font-size:11px;color:var(--mut);margin-top:2px}
+.timer-btns{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.tbtn{background:var(--card2);border:1px solid var(--bd);color:var(--txt);border-radius:var(--r8);padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Heebo',sans-serif;transition:.15s}
+.tbtn.start{background:var(--green);border-color:var(--green);color:#fff}
+.tbtn.stop{background:var(--red);border-color:var(--red);color:#fff}
+.tbtn:hover{opacity:.85}
+.preset-row{display:flex;gap:5px;margin-bottom:8px}
+.preset{flex:1;background:var(--card2);border:1px solid var(--bd);color:var(--mut);border-radius:var(--r8);padding:7px 4px;font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:.12s;font-family:'Heebo',sans-serif}
+.preset.on{border-color:var(--or);color:var(--or)}
+.cur-drill-box{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px;margin-bottom:8px}
+.cur-drill-name{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.interval-box{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px}
+.interval-row{display:flex;gap:7px;align-items:center}
+
+/* ===== PLAYERS ===== */
+.pcard{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:10px 11px;margin-bottom:7px;cursor:pointer;transition:.12s}
+.pcard:hover{border-color:var(--bd2)}
+.pcard-top{display:flex;align-items:center;gap:10px}
+.pav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.pn{font-size:13px;font-weight:700;color:var(--txt)}
+.ps{font-size:11px;color:var(--mut)}
+.ppct{text-align:center;min-width:46px}
+.ppct-v{font-size:22px;font-weight:900}
+.ppct-l{font-size:10px;color:var(--mut)}
+.pbar{height:4px;background:var(--bd);border-radius:2px;margin-top:8px;overflow:hidden;border-radius:2px}
+.pbar-fill{height:100%;border-radius:2px;transition:width .5s}
+.shoot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-bottom:10px}
+.sg-c{background:var(--card2);border:1px solid var(--bd);border-radius:var(--r8);padding:8px}
+.sg-l{font-size:10px;color:var(--mut);font-weight:700;margin-bottom:5px;line-height:1.3}
+.sg-r{display:flex;align-items:center;gap:4px}
+.sg-i{width:32px;background:var(--card);border:1px solid var(--bd);border-radius:4px;color:var(--txt);font-family:'Heebo',sans-serif;font-size:12px;padding:3px 4px;text-align:center;direction:ltr}
+.sg-p{font-size:12px;font-weight:700;min-width:32px}
+.inj-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px}
+.inj-y{background:#7F1D1D;color:#FCA5A5}
+.inj-n{background:#14532D;color:#86EFAC}
+
+/* ===== STATS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:10px}
+.stat-c{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:12px;text-align:center}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--or);line-height:1}
+.stat-l{font-size:11px;color:var(--mut);margin-top:3px}
+.bar-row{display:flex;align-items:center;gap:7px;margin:5px 0}
+.bar-lbl{font-size:11px;color:var(--mut);width:90px;text-align:right;flex-shrink:0}
+.bar-tr{flex:1;height:7px;background:var(--bd);border-radius:3px;overflow:hidden}
+.bar-fl{height:100%;border-radius:3px;transition:width .6s}
+.bar-v{font-size:11px;color:var(--txt);font-weight:700;width:30px}
+.progress-wrap{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:12px;margin-bottom:8px}
+
+/* ===== PLAYBOOK ===== */
+.play-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px;margin-bottom:8px}
+.play-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.play-sub{font-size:11px;color:var(--mut);margin-bottom:8px}
+.court{width:100%;aspect-ratio:1.8;background:#0A2E0A;border-radius:8px;position:relative;overflow:hidden;border:1px solid #1A4A1A}
+
+/* ===== CALENDAR ===== */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:10px}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:.12s;position:relative}
+.cal-day.today{background:var(--or);color:#fff}
+.cal-day.trained{background:#14532D;color:#86EFAC}
+.cal-day.rest{background:var(--card2);color:var(--mut)}
+.cal-day.game{background:#1E3A5F;color:#93C5FD}
+.cal-day-num{font-size:10px}
+.cal-dot{width:4px;height:4px;border-radius:50%;position:absolute;bottom:3px}
+
+/* ===== WELLNESS ===== */
+.wellness-row{display:flex;gap:6px;margin-bottom:8px}
+.w-card{flex:1;background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:9px;text-align:center;cursor:pointer;transition:.12s}
+.w-card.on{border-color:var(--or)}
+.w-icon{font-size:22px;margin-bottom:3px}
+.w-label{font-size:10px;color:var(--mut);font-weight:600}
+.w-val{font-size:16px;font-weight:700;color:var(--txt)}
+
+/* ===== PRESENCE ===== */
+.pres-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.pres-name{flex:1;font-size:13px;font-weight:600;color:var(--txt)}
+.pres-chk{width:26px;height:26px;border:1.5px solid var(--bd);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.12s;flex-shrink:0}
+.pres-chk.on{background:var(--green2);border-color:var(--green2)}
+
+/* ===== SEARCH HIGHLIGHT ===== */
+.hl{background:#FF5E14;color:#fff;border-radius:2px;padding:0 1px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--bd);border-radius:var(--r8);padding:9px 16px;font-size:12px;font-weight:700;color:var(--txt);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* ===== UTIL ===== */
+.empty{text-align:center;padding:28px;color:var(--mut);font-size:13px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.divider{height:1px;background:var(--bd);margin:10px 0}
+.flex-center{display:flex;align-items:center;justify-content:center}
+.gap6{gap:6px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div class="logo">
+        <div class="logo-ic">🏀</div>
+        <div class="logo-text">Hoop<span>Master</span> IL</div>
+      </div>
+      <div class="hdr-right">
+        <span class="badge badge-or">Ultimate</span>
+        <span class="badge badge-bl" id="planBadge">מערך: 0</span>
+        <span class="badge badge-green" id="onlineBadge">● Online</span>
+      </div>
+    </div>
+    <!-- sub-tabs for drills page -->
+    <div class="ntabs" id="drillTabs" style="display:flex">
+      <button class="ntab on" onclick="setDrillTab('browse',this)">🔍 עיון</button>
+      <button class="ntab" onclick="setDrillTab('favorites',this)">⭐ מועדפים</button>
+      <button class="ntab" onclick="setDrillTab('recent',this)">🕐 אחרונים</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGES -->
+<div class="pages">
+
+  <!-- ===== DRILLS PAGE ===== -->
+  <div class="pg on" id="pg-drills">
+    <div id="drillBrowse">
+      <div class="chiprow" id="ageRow"></div>
+      <div class="infobar" id="ageInfo"></div>
+      <input class="inp" id="srch" placeholder="🔍  חפש תרגיל, מיומנות, קטגוריה..." oninput="renderDrills()" style="margin-bottom:7px">
+      <div class="chiprow" id="catRow"></div>
+      <div id="aiBox"></div>
+      <div id="drillList"></div>
+    </div>
+    <div id="drillFavorites" style="display:none">
+      <div class="sec">תרגילים מועדפים</div>
+      <div id="favList"></div>
+    </div>
+    <div id="drillRecent" style="display:none">
+      <div class="sec">נצפו לאחרונה</div>
+      <div id="recentList"></div>
+    </div>
+  </div>
+
+  <!-- ===== PLAN PAGE ===== -->
+  <div class="pg" id="pg-plan">
+    <div class="sec">מערך אימון</div>
+    <div id="planItems"></div>
+    <div id="planTotal" style="display:none" class="plan-total"></div>
+    <div class="shr-row">
+      <button class="shr-btn" onclick="copyPlan()"><i class="ti ti-copy"></i> העתק</button>
+      <button class="shr-btn" onclick="exportPDF()"><i class="ti ti-file-pdf"></i> PDF</button>
+      <button class="shr-btn" onclick="sharePlan()"><i class="ti ti-share"></i> שתף</button>
+      <button class="shr-btn" onclick="clearPlan()"><i class="ti ti-trash"></i> נקה</button>
+    </div>
+    <div class="sec">נוכחות אימון</div>
+    <div id="presenceList"></div>
+    <div class="divider"></div>
+    <div class="sec">מצב עוזר מאמן</div>
+    <div style="background:linear-gradient(135deg,#1a2236,#0f1020);border:1px solid var(--gold2);border-radius:var(--r12);padding:12px;margin-bottom:8px">
+      <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px">🎙 Assistant Mode</div>
+      <div style="font-size:12px;color:var(--mut);margin-bottom:8px">עוזרי מאמן מקבלים עדכונים בזמן אמת על הנייד</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn-sm" style="background:#1E3A5F;color:#93C5FD;flex:1" onclick="toast('לינק הועתק ✓')"><i class="ti ti-link"></i> שלח לינק</button>
+        <button class="btn-sm" style="background:#14532D;color:#86EFAC;flex:1" onclick="toast('עדכון נשלח ✓')"><i class="ti ti-send"></i> שלח עדכון</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TIMER PAGE ===== -->
+  <div class="pg" id="pg-timer">
+    <div class="sec">טיימר מגרש — Live</div>
+    <div class="timer-ring-wrap">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="88" fill="none" stroke="var(--bd)" stroke-width="8"/>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="var(--or)" stroke-width="8"
+          stroke-dasharray="553" stroke-dashoffset="0" stroke-linecap="round" id="timerArc"/>
+      </svg>
+      <div class="timer-center">
+        <div class="timer-big" id="timerDig">05:00</div>
+        <div class="timer-sub" id="timerSub">מוכן</div>
+      </div>
+    </div>
+    <div class="timer-btns">
+      <button class="tbtn start" id="timerBtn" onclick="toggleTimer()"><i class="ti ti-player-play"></i> התחל</button>
+      <button class="tbtn" onclick="resetTimer()"><i class="ti ti-refresh"></i> אפס</button>
+    </div>
+    <div class="sec">קבועים מהירים</div>
+    <div class="preset-row">
+      <div class="preset" onclick="setPreset(2,this)">2′</div>
+      <div class="preset on" onclick="setPreset(5,this)">5′</div>
+      <div class="preset" onclick="setPreset(10,this)">10′</div>
+      <div class="preset" onclick="setPreset(15,this)">15′</div>
+      <div class="preset" onclick="setPreset(20,this)">20′</div>
+    </div>
+    <div class="sec">הגדרה ידנית</div>
+    <div class="interval-row" style="margin-bottom:8px">
+      <input class="inp" id="tMin" type="number" min="0" max="60" value="5" style="width:70px;text-align:center;direction:ltr">
+      <span style="color:var(--mut)">דק'</span>
+      <input class="inp" id="tSec" type="number" min="0" max="59" value="0" style="width:70px;text-align:center;direction:ltr">
+      <span style="color:var(--mut)">שנ'</span>
+      <button class="btn-pri" style="margin:0;flex:1" onclick="setCustomTimer()">קבע</button>
+    </div>
+    <div class="sec">Interval Training</div>
+    <div class="interval-box">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:7px">עבודה / מנוחה (שניות)</div>
+      <div class="interval-row">
+        <input class="inp" id="iWork" type="number" value="30" style="width:60px;text-align:center;direction:ltr">
+        <span style="color:var(--mut)">עבודה</span>
+        <input class="inp" id="iRest" type="number" value="15" style="width:60px;text-align:center;direction:ltr">
+        <span style="color:var(--mut)">מנוחה</span>
+        <input class="inp" id="iRounds" type="number" value="8" style="width:50px;text-align:center;direction:ltr">
+        <span style="color:var(--mut)">סטים</span>
+        <button class="btn-sm" style="background:var(--or);color:#fff" onclick="startInterval()">הפעל</button>
+      </div>
+      <div id="intervalStatus" style="font-size:12px;color:var(--mut);margin-top:7px;text-align:center">Interval מוכן</div>
+    </div>
+    <div class="sec">תרגיל נוכחי</div>
+    <div class="cur-drill-box" id="curDrillBox">
+      <div style="font-size:12px;color:var(--mut)">אין מערך — בנה מערך בטאב מערך</div>
+    </div>
+  </div>
+
+  <!-- ===== PLAYERS PAGE ===== -->
+  <div class="pg" id="pg-players">
+    <div class="sec">שחקנים — מעקב אישי</div>
+    <div id="playerList"></div>
+    <button class="btn-pri" onclick="addPlayer()"><i class="ti ti-user-plus"></i>  הוסף שחקן</button>
+    <div class="sec">Wellness עונתי</div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px">
+      <div style="font-size:11px;color:var(--mut);margin-bottom:8px">דיווח יומי — רמת אנרגיה / שינה / כאב</div>
+      <div class="wellness-row" id="wellnessRow"></div>
+      <div style="font-size:11px;color:var(--mut);margin-top:6px" id="wellnessSummary">ממוצע: אנרגיה 7/10 · שינה 6.5 שעות</div>
+    </div>
+  </div>
+
+  <!-- ===== STATS PAGE ===== -->
+  <div class="pg" id="pg-stats">
+    <div class="sec">סטטיסטיקות עונה</div>
+    <div class="stat-grid">
+      <div class="stat-c"><div class="stat-n">67</div><div class="stat-l">אימונים</div></div>
+      <div class="stat-c"><div class="stat-n" id="sTotalPlayers">3</div><div class="stat-l">שחקנים</div></div>
+      <div class="stat-c"><div class="stat-n">142</div><div class="stat-l">שעות</div></div>
+      <div class="stat-c"><div class="stat-n">89%</div><div class="stat-l">נוכחות</div></div>
+    </div>
+    <div class="sec">פיצול קטגוריות</div>
+    <div class="progress-wrap" id="catBars"></div>
+    <div class="sec">שחקן מצטיין</div>
+    <div class="progress-wrap" id="topPlayer"></div>
+    <div class="sec">לוח שנה — עונה</div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px;margin-bottom:8px">
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px">
+        <div style="font-size:9px;color:var(--mut);text-align:center">א</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ב</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ג</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ד</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ה</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ו</div>
+        <div style="font-size:9px;color:var(--mut);text-align:center">ש</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div style="display:flex;gap:10px;font-size:10px;color:var(--mut);flex-wrap:wrap;margin-top:6px">
+        <span><span style="color:var(--or)">■</span> היום</span>
+        <span><span style="color:#22C55E">■</span> אימון</span>
+        <span><span style="color:#3B82F6">■</span> משחק</span>
+        <span><span style="color:var(--bd2)">■</span> מנוחה</span>
+      </div>
+    </div>
+    <button class="btn-sec" onclick="toast('מייצא דוח PDF...')"><i class="ti ti-download"></i>  ייצוא דוח עונה PDF</button>
+  </div>
+
+  <!-- ===== PLAYBOOK PAGE ===== -->
+  <div class="pg" id="pg-more">
+    <div class="sec">פלייבוק — מהלכים</div>
+    <div id="playbookList"></div>
+    <button class="btn-pri" onclick="toast('עורך מגרש — בקרוב בגרסה הבאה!')"><i class="ti ti-pencil"></i>  הוסף מהלך</button>
+    <div class="sec">מאגר אישי — הסרטוני הצלחה שלי</div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:12px;margin-bottom:8px">
+      <div style="font-size:12px;color:var(--mut);margin-bottom:8px">הוסף לינק YouTube לסרטון שאהבת</div>
+      <div style="display:flex;gap:6px">
+        <input class="inp" id="vidUrl" placeholder="https://youtube.com/..." style="flex:1">
+        <button class="btn-sm" style="background:var(--or);color:#fff;white-space:nowrap" onclick="addVideo()">הוסף</button>
+      </div>
+      <div id="videoList" style="margin-top:8px"></div>
+    </div>
+    <div class="sec">הגדרות מאמן</div>
+    <div style="background:var(--card);border:1px solid var(--bd);border-radius:var(--r12);padding:11px">
+      <div id="settingsRows"></div>
+    </div>
+  </div>
+
+</div><!-- /pages -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnt on" onclick="goPg('drills',this)" id="bnav-drills"><i class="ti ti-ball-basketball"></i>תרגילים</button>
+  <button class="bnt" onclick="goPg('plan',this)" id="bnav-plan"><i class="ti ti-clipboard-list"></i>מערך</button>
+  <button class="bnt" onclick="goPg('timer',this)" id="bnav-timer"><i class="ti ti-clock"></i>טיימר</button>
+  <button class="bnt" onclick="goPg('players',this)" id="bnav-players"><i class="ti ti-users"></i>שחקנים</button>
+  <button class="bnt" onclick="goPg('stats',this)" id="bnav-stats"><i class="ti ti-chart-bar"></i>סטטס</button>
+  <button class="bnt" onclick="goPg('more',this)" id="bnav-more"><i class="ti ti-dots"></i>עוד</button>
+</nav>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="handleModalBg(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ======================================================
+   DATA
+   ====================================================== */
+const AGE_CATS=[
+  {id:'ab',label:"א'-ב'",ball:'5',hoop:'נמוך',desc:"יסודות ראשוניים — אחיזה, דריבל, הכרת כדור. כדור 5, סל נמוך."},
+  {id:'cd',label:"ג'-ד'",ball:'5',hoop:'נמוך',desc:"בסיס מתקדם — דריבל בתנועה, פאס, קליעה ראשונית. כדור 5, סל נמוך."},
+  {id:'katb',label:'קט-ב',ball:'5',hoop:'נמוך',desc:"קט-סל ב' — מיומנויות בסיס ועבודה קבוצתית. כדור 5, סל נמוך."},
+  {id:'kata',label:'קט-א',ball:'5',hoop:'גבוה',desc:"קט-סל א' — בסיס ברמה גבוהה, מעבר לסל רגיל. כדור 5, סל גבוה."},
+  {id:'yb',label:'ילדים-ב',ball:'6',hoop:'גבוה',desc:"ילדים ב' — כדורסל בינוני, עבודה קבוצתית, דריבל מתקדם. כדור 6."},
+  {id:'ya',label:'ילדים-א',ball:'6',hoop:'גבוה',desc:"ילדים א' — Pick & Roll, התקפה מאורגנת, הגנה אזורית. כדור 6."},
+  {id:'ne',label:'נערים',ball:'7',hoop:'גבוה',desc:"נערים — כמו ליגה: כל הפלייז, כל ההגנות. כדור 7."},
+  {id:'no',label:'נוער',ball:'7',hoop:'גבוה',desc:"נוער — ברמת בוגרים: טקטיקה, כושר, אחוזים. כדור 7."},
+  {id:'adu',label:'בוגרים',ball:'7',hoop:'גבוה',desc:"בוגרים — רמה גבוהה מאוד: כל המערכות. כדור 7."},
+];
+
+const CATS=[
+  {id:'all',l:'הכל'},{id:'dribble',l:'דריבל'},{id:'shooting',l:'קליעה'},
+  {id:'defense',l:'הגנה'},{id:'pass',l:'פאסינג'},{id:'fitness',l:'כושר'},
+  {id:'teamplay',l:'קבוצתי'},{id:'3x3',l:'3×3'},{id:'cross',l:'⚡ קרוס'},
+  {id:'mental',l:'מנטאל'},{id:'individual',l:'אישי'},
+];
+
+const DRILLS=[
+  // === א'-ב' / ג'-ד' — בסיס ===
+  {id:1,n:'דריבל בשתי ידיים',c:'dribble',a:['ab','cd'],lv:0,t:['דריבל','בסיס'],d:'לימוד שתי ידיים ותחושת כדור ראשונית.',dur:8,p:'2-8',s:['עמוד, כדור בשתי ידיים','דרבל ימין 20× ואז שמאל 20×','הוסף צעד קדימה ואחורה','שמור 10 דריבלים רצוף']},
+  {id:2,n:'שמירה על כדור 1v1',c:'dribble',a:['ab','cd','katb'],lv:0,t:['דריבל','תחרות'],d:'לשמור על כדור — תחרות קטנה ראשונה.',dur:6,p:'2',s:['תוקף מדרבל במקום','מגן מנסה לגנוב ביד אחת','החלפה כל 30 שניות','3 סטים']},
+  {id:3,n:'זריקה לסל מקרוב',c:'shooting',a:['ab','cd'],lv:0,t:['קליעה','ביטחון'],d:'קליעה מ-2 מטר לבניית ביטחון.',dur:10,p:'1-4',s:['עמוד 2 מטר מסל','זרוק עם קשת גבוהה','10 זריקות, ספור פגיעות','מטרה: 7/10']},
+  {id:4,n:'פאס חזה בזוגות',c:'pass',a:['ab','cd','katb'],lv:0,t:['פאסינג','בסיס'],d:'פאס חזה — אחיזה, שחרור, רגליים.',dur:8,p:'4-10',s:['3 מטר בין זוגות','10 פאסים × 3','הוסף: פאס כתף','הוסף: פאס ניתור']},
+  {id:5,n:'הליכה עם כדור',c:'dribble',a:['ab'],lv:0,t:['דריבל','ראשוני'],d:'הליכה תוך שמירה על דריבל — הצעד הראשון.',dur:6,p:'כולם',s:['הלך לאט עם כדור','צעד אחרי צעד','אסור לאבד','מסלול 10 מטר × 3']},
+  {id:6,n:'פאס ניתור — Bounce',c:'pass',a:['cd','katb','kata'],lv:0,t:['פאסינג','בסיס'],d:'פאס ניתור — מגיע לגובה מותן.',dur:8,p:'4-10',s:['פאס ב-2/3 מהמרחק','10 × כל כיוון','הוסף תנועה','Chest + Bounce בחילופין']},
+  {id:7,n:'Layup ימין',c:'shooting',a:['cd','katb','kata'],lv:0,t:['ליי-אפ','בסיס'],d:'2 צעדים לסל מימין — הבסיס.',dur:12,p:'1-6',s:['ריצה קלה מימין','שניים-אחד, זרוק מהלוח','10 מימין','10 משמאל']},
+  {id:8,n:'Layup יד חלשה',c:'shooting',a:['cd','katb','kata','yb'],lv:0,t:['ליי-אפ','יד חלשה'],d:'Layup משמאל — פיתוח יד חלשה.',dur:12,p:'1-6',s:['כנס משמאל','סיים ביד שמאל','Reverse Layup','5 מכל עמדה']},
+  {id:9,n:'חימום דינמי',c:'fitness',a:['ab','cd','katb','kata','yb','ya','ne','no','adu'],lv:0,t:['חימום','בסיס'],d:'חימום מלא לכל גיל.',dur:8,p:'כולם',s:['ריצה קלה × 2','High Knees + Butt Kicks','Hip Circles + Arm Swings','Lunge Walk חצי מגרש']},
+  {id:10,n:'שגרת עונשין',c:'mental',a:['kata','yb','ya','ne','no','adu'],lv:0,t:['עונשין','מנטאל'],d:'שגרת עונשין אישית עם לחץ.',dur:10,p:'1',s:['3 שלב: נשימה/קפיצה/שגרה','10 בשקט','10 תחת לחץ','בנה עקביות']},
+  // === קט-א' / ילדים ===
+  {id:11,n:'מעגל קליעה 5 נקודות',c:'shooting',a:['kata','yb','ya','ne'],lv:1,t:['קליעה','עמדות'],d:'קליעה מ-5 עמדות — מדידת אחוזים.',dur:15,p:'1-3',s:['5 נקודות: פינות+אלכסון+מרכז','10 × כל נקודה','תעד פגיעות','2 סבבים']},
+  {id:12,n:'דריבל בסלאלום',c:'dribble',a:['katb','kata','yb'],lv:1,t:['דריבל','זריזות'],d:'דריבל בין קונוסים — שליטה ומהירות.',dur:10,p:'2-8',s:['6 קונוסים','סלאלום × 3','חזור ביד חלשה','מדוד זמן']},
+  {id:13,n:'Defensive Slide',c:'defense',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['הגנה','תנועה'],d:'גלישה הגנתית ללא צליבת רגליים.',dur:10,p:'כולם',s:['עמדה נמוכה','גלישה × 5 מטר','ספרינט חזרה','5 סטים']},
+  {id:14,n:'עונשין 100',c:'shooting',a:['kata','yb','ya','ne','no','adu'],lv:1,t:['עונשין','כושר'],d:'100 עונשין עם מעקב אחוז.',dur:20,p:'1',s:['10 סטים × 10','מנוחה 30 שניות','תעד כל סט','מטרה: 70% בוגרים']},
+  {id:15,n:'Full Court Layups',c:'shooting',a:['cd','katb','kata','yb','ya'],lv:0,t:['ליי-אפ','ריצה'],d:'ריצה מגרש שלם עם כדור וסיום.',dur:12,p:'4-12',s:['2 שורות × 2 צדדים','ריצה, 2 צעדים, סל','חוזר לשורה','20 סלים / 5 דקות']},
+  {id:16,n:'Box Out Rebounding',c:'defense',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['ריבאונד','הגנה'],d:'Box Out נכון — חסימת מסלול.',dur:10,p:'4',s:['2v2 מתחת לסל','מאמן זורק','כולם Box Out','מנצח: מי שתפס']},
+  {id:17,n:'Overhead Pass',c:'pass',a:['katb','kata','yb','ya'],lv:1,t:['פאסינג','Overhead'],d:'פאס מעל הראש — להתחמק ממגן.',dur:8,p:'4-8',s:['ידיים מעל ראש','10 פאסים','הוסף מגן פסיבי','הוסף תנועה']},
+  {id:18,n:'Spot Shooting 100',c:'shooting',a:['kata','yb','ya','ne'],lv:1,t:['קליעה','עמדה'],d:'100 זריקות ממקומות קבועים.',dur:20,p:'1-2',s:['5 עמדות × 20','מנוחה 30 שניות','תעד כל עמדה','מטרה: 50%+']},
+  {id:19,n:'Fast Break 3v2',c:'teamplay',a:['yb','ya','ne','no','adu'],lv:1,t:['מעבר','ספרינט'],d:'Fast Break — 3 תוקפים מול 2 מגנים.',dur:15,p:'6-10',s:['הגנה לוחצת','ריבאונד → ספרינט','3v2 קדימה','סיים ב-5 שניות']},
+  {id:20,n:'Ladder זריזות',c:'fitness',a:['cd','katb','kata','yb','ya','ne','no','adu'],lv:1,t:['כושר','זריזות'],d:'תנועות Ladder לשיפור יציבה ורגליים.',dur:10,p:'כולם',s:['Ladder על הרצפה','ריצה קדימה','Shuffle × 4','הגבר קצב']},
+  // === ילדים-א' / נערים ===
+  {id:21,n:'Pick & Roll בסיסי',c:'teamplay',a:['ya','ne','no','adu'],lv:1,t:['פיק','קבוצתי'],d:'P&R — מסיך, נושא, Roll לסל.',dur:15,p:'4',s:['נושא + מסיך','מסיך מגדיר, נושא מחליק','קרא פאס או חדירה','Roll לסל']},
+  {id:22,n:'Pick & Pop',c:'teamplay',a:['ya','ne','no','adu'],lv:1,t:['פיק','שלשה'],d:'P&P — מסיך מתרחק לשלשה.',dur:14,p:'3',s:['נושא + מסיך','מסיך מגדיר','Pop לקו שלשה','קבל — זרוק']},
+  {id:23,n:'הגנה 1v1',c:'defense',a:['kata','yb','ya','ne','no','adu'],lv:1,t:['הגנה','1v1'],d:'מגן מכריח לכיוון הקשה.',dur:18,p:'2',s:['½ גוף צד','הכוון לקיר','אסור כניסה לצבע','0 כניסות = ניצחון']},
+  {id:24,n:'קליעה מ-3 מתפיסה',c:'shooting',a:['ya','ne','no','adu'],lv:1,t:['שלשה','מתפיסה'],d:'קבל פאס → שחרר מיד.',dur:14,p:'2',s:['פאסר בצבע','קבל — ירה מיד','10 × 5 עמדות','מטרה: 40%+']},
+  {id:25,n:'Backdoor Cut',c:'teamplay',a:['ya','ne','no','adu'],lv:1,t:['חתכה','קבוצתי'],d:'Backdoor — פיתוי וחתכה.',dur:14,p:'3',s:['שחקן בכנף','פנה לבחוץ — פתה מגן','חתוך חזק לסל','Lob פאס']},
+  {id:26,n:'DHO — Handoff',c:'teamplay',a:['ya','ne','no','adu'],lv:1,t:['Handoff','קבוצתי'],d:'Drive-Handoff — מסירה תוך כדי נסיעה.',dur:14,p:'3',s:['נושא נוסע לצד','Handoff לשחקן','Shoot / Drive','× 10 לכל צד']},
+  {id:27,n:'Closeout',c:'defense',a:['ya','ne','no','adu'],lv:2,t:['הגנה','Closeout'],d:'יציאה לזורק פנוי.',dur:12,p:'2',s:['מגן בצבע','פאסר מעביר לתוקף','Closeout ידיים למעלה','אסור לעבור']},
+  {id:28,n:'Pump Fake + Drive',c:'shooting',a:['ya','ne','no','adu'],lv:1,t:['הטעיה','חדירה'],d:'Pump Fake → חדירה לסל.',dur:12,p:'2',s:['Pump Fake מוגזם','מגן קופץ → חדור','סיים או פאס','× 15']},
+  {id:29,n:'Transition Defense 3v2',c:'defense',a:['ya','ne','no','adu'],lv:2,t:['הגנה','Transition'],d:'2 מגנים מול 3 תוקפים.',dur:15,p:'5',s:['2 מגנים בפנים','3 מגיעים','מגן קדמי — עצור כדור','פרטנר — כסה סל']},
+  {id:30,n:'Corner Three',c:'shooting',a:['ne','no','adu'],lv:1,t:['שלשה','פינה'],d:'שלשות פינה — הקרובות ביותר.',dur:14,p:'1-2',s:['עמד בפינה','× 20 מכל פינה','Catch & Shoot מהיר','מטרה: 45%+']},
+  // === נערים / נוער / בוגרים ===
+  {id:31,n:'Pull-Up Jumper',c:'shooting',a:['ne','no','adu'],lv:2,t:['Mid-Range','כדרור'],d:'עצירה פתאומית + זריקה.',dur:14,p:'1-2',s:['דרבל 3 צעדים','עצור שתי רגליים','שחרר מיד','10 ימין, 10 שמאל']},
+  {id:32,n:'Floater',c:'shooting',a:['ya','ne','no','adu'],lv:2,t:['Floater','סיומת'],d:'Floater מעל מגן גבוה.',dur:12,p:'1-2',s:['כנס לצבע','שחרר ביד ימין','חזור יד שמאל','נגיעה רכה בלוח']},
+  {id:33,n:'Euro Step',c:'shooting',a:['ya','ne','no','adu'],lv:2,t:['Euro Step','סיומת'],d:'שני צעדים לכיוונים שונים.',dur:12,p:'1-2',s:['כנס ימינה','צעד ראשון ימין','צעד שני שמאל','סיים Layup']},
+  {id:34,n:'Spin Move',c:'dribble',a:['ya','ne','no','adu'],lv:2,t:['דריבל','מנוע'],d:'מעלפן 180° לפסיחת מגן.',dur:12,p:'1-2',s:['דרבל מגן מולך','Spin 180°','הגן על כדור','1v1 חי']},
+  {id:35,n:'Crossover + Hesitation',c:'dribble',a:['yb','ya','ne','no','adu'],lv:2,t:['דריבל','Hesitation'],d:'Crossover עם עצירה מדומה.',dur:12,p:'1-2',s:['דרבל ימין, Hesitation','Crossover שמאל מהיר','חדור','× 5×5']},
+  {id:36,n:'Baseline Drive',c:'dribble',a:['ya','ne','no','adu'],lv:2,t:['חדירה','Baseline'],d:'חדירה דרך Baseline.',dur:13,p:'1-2',s:['כנס מהקו','Layup / Reverse','הוסף מגן','10 לכל צד']},
+  {id:37,n:'Post Moves',c:'teamplay',a:['ne','no','adu'],lv:2,t:['Post','פנים'],d:'Drop Step, Up & Under, Hook.',dur:16,p:'1-2',s:['קבל ב-Post','Drop Step × 5','Up & Under × 5','Hook × 5']},
+  {id:38,n:'Shooting Off Screen',c:'shooting',a:['ne','no','adu'],lv:2,t:['Screen','קליעה'],d:'קליעה אחרי Off-Ball Screen.',dur:16,p:'3',s:['Curl × 5','Fade × 5','Flare × 5','תחת לחץ × 5']},
+  {id:39,n:'Staggered Screen',c:'teamplay',a:['ne','no','adu'],lv:2,t:['Screen','מורכב'],d:'Double Screen — Curl / Fade.',dur:16,p:'4',s:['2 מסיכים ברצף','Curl × 5','Fade × 5','פאסר קורא']},
+  {id:40,n:'Motion Offense',c:'teamplay',a:['ne','no','adu'],lv:2,t:['תנועה','קבוצתי'],d:'Motion 5 שחקנים.',dur:22,p:'10',s:['3 מעלה, 2 למטה','Cut/Screen/Relocate','אסור לעמוד 2+ שניות','× 3 סבבים']},
+  {id:41,n:'Zone Offense 2-3',c:'teamplay',a:['ne','no','adu'],lv:2,t:['אזורי','התקפה'],d:'שבירת 2-3 בתנועה.',dur:20,p:'5-10',s:['הצב 2-3','עברית בין קווים','High-Low','5 עמדות']},
+  {id:42,n:'Press Break',c:'teamplay',a:['ne','no','adu'],lv:2,t:['לחץ','בקע'],d:'פריצת לחץ מלא 5×5.',dur:18,p:'10',s:['5 מול 5','לחץ מלא','חצה ב-8 שניות','הצלחה = נקודה']},
+  {id:43,n:'1-2-1-1 Trap Press',c:'defense',a:['ne','no','adu'],lv:2,t:['לחץ','1-2-1-1'],d:'לחץ מלא 1-2-1-1 — Trap.',dur:20,p:'10',s:['הצב 1-2-1-1','לחץ נושא','Trap בכנף','Rotate']},
+  {id:44,n:'Half-Court Trap',c:'defense',a:['ne','no','adu'],lv:2,t:['מלכודת','הגנה'],d:'מלכודת חצי מגרש.',dur:16,p:'5-10',s:['הגנה 2-2-1','לכוד בכנף','Trap — 2 מגנים','שלושה זונביים']},
+  {id:45,n:'Help Defense',c:'defense',a:['ya','ne','no','adu'],lv:2,t:['הגנה','Help'],d:'הגנת Help — "שחייה".',dur:15,p:'6',s:['3v3','מגן עוזר לצבע','"שחה" לצבע','חזור לשחקן שלך']},
+  {id:46,n:'Defense on Ball Screen',c:'defense',a:['ne','no','adu'],lv:2,t:['הגנה','P&R'],d:'הגנת P&R — Drop/Hedge/Switch.',dur:18,p:'4',s:['2v2','× 5 Drop','× 5 Hedge','× 5 Switch']},
+  {id:47,n:'Alley-Oop',c:'teamplay',a:['ne','no','adu'],lv:2,t:['Alley-Oop','תנועה'],d:'Alley-Oop — פאס לאוויר + סל.',dur:12,p:'3',s:['פאסר + קופץ','תזמון ריצה','לוב מדויק','× 10']},
+  {id:48,n:'Inbound BLOB',c:'teamplay',a:['ne','no','adu'],lv:2,t:['Inbound','BLOB'],d:'מהלך קו תחתון — Double Screen.',dur:14,p:'5',s:['4 בצבע','Screen Double','חתכה לקו','אופציה: לוב']},
+  {id:49,n:'Spain Pick & Roll',c:'teamplay',a:['no','adu'],lv:2,t:['Spain P&R','מתקדם'],d:'P&R עם מסיך מאחור.',dur:18,p:'5',s:['נושא, מסיך, מסיך שני','מסיך ראשון מגדיר','מסיך שני מאחור','Roll + Pop אפשרויות']},
+  {id:50,n:'Offensive Rebound',c:'teamplay',a:['ne','no','adu'],lv:2,t:['ריבאונד','התקפה'],d:'כבישת ריבאונד התקפי.',dur:14,p:'4',s:['2v2 בצבע','זריקה מוסכמת','כולם לריבאונד','שנייה: סיים מהר']},
+  // === כושר ===
+  {id:51,n:'Box Jumps',c:'fitness',a:['yb','ya','ne','no','adu'],lv:1,t:['כושר','כוח'],d:'קפיצות קופסה — כוח ריבאונד.',dur:8,p:'כולם',s:['קופסה 40-60 ס"מ','קפוץ, נחת רכה','3 × 10','מנוחה 60 שניות']},
+  {id:52,n:'Suicides',c:'fitness',a:['kata','yb','ya','ne','no','adu'],lv:2,t:['כושר','קונדיציה'],d:'Suicides — כושר אנאירובי.',dur:12,p:'כולם',s:['קו → קו','ספרינט מלא','3 סטים','מנוחה 2 דקות']},
+  {id:53,n:'Core — Plank Circuit',c:'fitness',a:['yb','ya','ne','no','adu'],lv:1,t:['כושר','Core'],d:'Core חזק = יציבות.',dur:10,p:'כולם',s:['Plank 60 שניות','Side Plank × 2','Mountain Climbers × 20','3 סטים']},
+  {id:54,n:'Plyometric Depth Jumps',c:'fitness',a:['ne','no','adu'],lv:2,t:['כושר','פליומטרי'],d:'Depth Jumps — פצצות.',dur:12,p:'כולם',s:['עמוד על קופסה','קפץ + מיד למעלה','3 × 8','מנוחה 90 שניות']},
+  {id:55,n:'Lateral Bounds',c:'fitness',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['כושר','זריזות'],d:'קפיצות צידיות — מהירות.',dur:10,p:'כולם',s:['קפוץ רגל אחת צדדים','× 10 כל צד','הגדל מרחק','3 סטים']},
+  {id:56,n:'Sprint + Backpedal',c:'fitness',a:['kata','yb','ya','ne','no','adu'],lv:1,t:['כושר','ספרינט'],d:'ספרינט + ריצה אחורה.',dur:10,p:'כולם',s:['ספרינט חצי מגרש','Backpedal חזרה','3 × 4','מנוחה 45 שניות']},
+  {id:57,n:'Balance Single Leg',c:'fitness',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['כושר','שיווי משקל'],d:'שיווי משקל ברגל אחת.',dur:8,p:'כולם',s:['עמוד רגל אחת 30 שניות','עיניים עצומות','קבל פאס','3 × לכל רגל']},
+  {id:58,n:'Hip Mobility',c:'fitness',a:['ya','ne','no','adu'],lv:0,t:['כושר','גמישות'],d:'גמישות ירך — מניעת פציעות.',dur:10,p:'כולם',s:['Hip 90/90','Pigeon Pose × 45 שניות','World\'s Greatest Stretch','3 × לכל צד']},
+  // === קרוס-ספורט ===
+  {id:59,n:'כדורגל — פאס בתנועה',c:'cross',a:['ab','cd','katb','kata'],lv:0,t:['קרוס-ספורט','ראיית מגרש'],d:'פאסים ברגל בתנועה — ראיית מגרש.',dur:8,p:'4-8',s:['4 בריבוע','פאס אלכסוני + תנועה','ממשיך','5 דקות']},
+  {id:60,n:'כדוריד — שחרור זריקה',c:'cross',a:['yb','ya','ne','no','adu'],lv:1,t:['קרוס-ספורט','שחרור'],d:'שחרור כדוריד — משפר Pull-Up.',dur:10,p:'1-2',s:['Overhand × 20','עבור לכדורסל','Floater × 15','השווה תחושה']},
+  {id:61,n:'אגרוף — Footwork',c:'cross',a:['ya','ne','no','adu'],lv:1,t:['קרוס-ספורט','זריזות'],d:'Footwork מאגרוף — יציבה הגנתית.',dur:10,p:'כולם',s:['מראה ←→ פייטר','30 שניות','Jab Step','שלב הגנה']},
+  {id:62,n:'יוגה — גמישות',c:'cross',a:['ya','ne','no','adu'],lv:0,t:['קרוס-ספורט','גמישות'],d:'יוגה לכדורסלנים.',dur:12,p:'כולם',s:['Pigeon Pose × 60 שניות','Hip Flexor Stretch','Quad Stretch','3 × לכל צד']},
+  {id:63,n:'הוקי — חסימת גוף',c:'cross',a:['yb','ya','ne','no','adu'],lv:1,t:['קרוס-ספורט','חסימה'],d:'Box Out מהוקי.',dur:8,p:'2-4',s:['חסימת גוף 360°','שמור שחקן מאחור','Reverse Pivot','שלב ל-Box Out']},
+  // === מנטאל ===
+  {id:64,n:'Visualization',c:'mental',a:['yb','ya','ne','no','adu'],lv:0,t:['מנטאל','הכנה'],d:'5 דקות הדמיה לפני אימון.',dur:5,p:'כולם',s:['שב בשקט','דמיין 3 תרגילים מוצלחים','דמיין מצב קשה ופתרונו','כנס עם כוונה']},
+  {id:65,n:'Breathing Control',c:'mental',a:['ya','ne','no','adu'],lv:0,t:['מנטאל','נשימה'],d:'שליטה בנשימה תחת לחץ.',dur:8,p:'כולם',s:['Box Breathing 4-4-4-4','10 נשימות לפני זריקה','שחרר בפקיעה','מטרה: 75%+ לחץ']},
+  {id:66,n:'Team Huddle',c:'mental',a:['katb','kata','yb','ya','ne','no','adu'],lv:0,t:['מנטאל','קבוצה'],d:'שגרת עגול קבוצתי.',dur:5,p:'כולם',s:['עגול קבוצה','מאמן: מטרת יום','כל שחקן: מחויבות','סיום: קריאת קבוצה']},
+  {id:67,n:'Film Study Session',c:'mental',a:['ya','ne','no','adu'],lv:0,t:['מנטאל','טקטיקה'],d:'צפייה ב-Film — ניתוח עצמי.',dur:20,p:'כולם',s:['Clip 5 דקות','מה עשית טוב','מה לשפר','2 מטרות לאימון הבא']},
+  // === אישי ===
+  {id:68,n:'Individual — Guard',c:'individual',a:['ya','ne','no','adu'],lv:2,t:['אישי','Guard'],d:'אימון אישי לגארד — 45 דקות.',dur:45,p:'1',s:['Ball Handling × 10 דק\'','Shooting × 15 דק\'','1v1 Moves × 10','Conditioning × 10']},
+  {id:69,n:'Individual — Big',c:'individual',a:['ne','no','adu'],lv:2,t:['אישי','Big'],d:'אימון אישי לבג — 45 דקות.',dur:45,p:'1',s:['Post Moves × 15 דק\'','Mid-Range × 10','Rebounding × 10','Conditioning × 10']},
+  {id:70,n:'Reaction Drill',c:'individual',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['אישי','תגובה'],d:'תגובה מהירה — Decision Making.',dur:10,p:'1-2',s:['מאמן מראה: ימין/שמאל','שחקן מגיב מיד','הוסף כדור','הגבר קצב']},
+  {id:71,n:'Shooting Warm-Up',c:'shooting',a:['kata','yb','ya','ne','no','adu'],lv:0,t:['חימום','קליעה'],d:'שגרת חימום קליעה 10 דקות.',dur:10,p:'1',s:['Layups × 10 לכל צד','Mid-Range × 10','עונשין × 5','שלשה אחת מכל עמדה']},
+  {id:72,n:'Mid-Post Shooting',c:'shooting',a:['ne','no','adu'],lv:1,t:['Mid-Post','קליעה'],d:'Mid-Post — הזווית הסמויה.',dur:12,p:'1-2',s:['Mid-Post ימין × 10','Turn & Shoot','Mid-Post שמאל','Pull-Up × 5']},
+  {id:73,n:'Skip Pass',c:'pass',a:['ya','ne','no','adu'],lv:1,t:['פאסינג','מהיר'],d:'Skip Pass לצד הנגדי.',dur:10,p:'5-10',s:['5 בקו שלשה','Skip כנף לכנף','קבל — זרוק מיד','× 10 סבבים']},
+  {id:74,n:'No-Look Pass',c:'pass',a:['ne','no','adu'],lv:2,t:['פאסינג','יצירתי'],d:'פאס ללא הסתכלות.',dur:12,p:'3-4',s:['הסתכל ימין, פאס שמאל','Fake × 10','שלב ב-3v2','בנה אינסטינקט']},
+  {id:75,n:'Drag Screen Transition',c:'teamplay',a:['ne','no','adu'],lv:2,t:['פיק','Drag'],d:'Drag Screen ב-Transition.',dur:14,p:'4',s:['שחקן ב-Transition','מסיך במרכז','Drag Screen','Shoot / Drive']},
+  {id:76,n:'כדורגל — שליטה בכדור',c:'cross',a:['ab','cd'],lv:0,t:['קרוס-ספורט','שליטה'],d:'שליטה בכדור ברגל — תיאום.',dur:8,p:'כולם',s:['גלגל כדור ברגל','ימין ושמאל לסירוגין','עיגולים סביב גוף','3 × 30 שניות']},
+  {id:77,n:'Conditioning — 17s',c:'fitness',a:['ne','no','adu'],lv:2,t:['כושר','NBA'],d:'ריצת 17 — בדיקת כושר NBA.',dur:15,p:'כולם',s:['מגרש שלם × 17','בפחות מ-60 שניות','מנוחה 60 שניות','× 3 סטים']},
+  {id:78,n:'Dribble Handoff Drive',c:'dribble',a:['ya','ne','no','adu'],lv:2,t:['דריבל','Combo'],d:'Combo מתקדם — DHO + Drive.',dur:14,p:'3',s:['DHO בפינה','מקבל: חדור מיד','אופציה: Kick-Out','× 5 × 2 צדדים']},
+  {id:79,n:'Five-Out Motion',c:'teamplay',a:['no','adu'],lv:2,t:['תנועה','Five-Out'],d:'Five-Out — 5 שחקנים מחוץ לצבע.',dur:24,p:'10',s:['כל 5 מחוץ לצבע','חתכות ספונטניות','אסור סל עד 3 פאסים','× 3 × 5 דקות']},
+  {id:80,n:'Elbow Shooting',c:'shooting',a:['ne','no','adu'],lv:1,t:['קליעה','Elbow'],d:'קליעה מ-Elbow — פינת הצבע.',dur:12,p:'1-2',s:['Elbow ימין × 10','Elbow שמאל × 10','Pull-Up + Catch','מטרה: 55%+']},
+  {id:81,n:'Hustle Drills',c:'fitness',a:['katb','kata','yb','ya','ne','no','adu'],lv:1,t:['כושר','מנטאל'],d:'Hustle — גישה ומאמץ.',dur:12,p:'כולם',s:['Loose ball × 5','Dive on floor × 3','Charge taking practice','מוטיבציה: "כל כדור מספר"]},
+  {id:82,n:'Three-Man Weave',c:'pass',a:['yb','ya','ne','no','adu'],lv:1,t:['פאסינג','תנועה'],d:'Three-Man Weave — פאסינג ותנועה.',dur:12,p:'6-12',s:['3 שחקנים','פאס + חצייה','מגרש שלם','סיום Layup']},
+  {id:83,n:'Advantage/Disadvantage',c:'teamplay',a:['ya','ne','no','adu'],lv:2,t:['1v2','2v3'],d:'אי-שוויון מספרי — Decision Making.',dur:16,p:'6',s:['1v2 × 5','2v3 × 5','3v4 × 5','מוצר: קבלת החלטות מהירה']},
+  {id:84,n:'Blind Passing',c:'pass',a:['ne','no','adu'],lv:2,t:['פאסינג','תגובה'],d:'פאסינג בלי לראות שחקן.',dur:10,p:'4',s:['עיניים ½ עצומות','פאס לתנועה, לא לשחקן','× 10','שפר Peripheral Vision']},
+  {id:85,n:'Contact Finishing',c:'shooting',a:['ya','ne','no','adu'],lv:2,t:['סיומת','מגע'],d:'סיומת תחת מגע — And-1.',dur:14,p:'2',s:['כנס לצבע','מגן נוגע קל','שמור כדור, סיים','× 10 × 2 ידיים']},
+];
+
+const PLAYERS=[
+  {id:1,n:'יוסי כהן',age:'ne',av:'יכ',bg:'#1E3A5F',tc:'#93C5FD',injured:false,present:true,
+   s:{tc:{m:4,a:10},td:{m:2,a:7},mc:{m:5,a:9},md:{m:4,a:8},ls:{m:7,a:9},lw:{m:3,a:8},fl:{m:2,a:6},ft:{m:8,a:10},po:{m:3,a:7},a1:{m:4,a:8}}},
+  {id:2,n:'דנה לוי',age:'ya',av:'דל',bg:'#14532D',tc:'#86EFAC',injured:false,present:true,
+   s:{tc:{m:3,a:8},td:{m:1,a:5},mc:{m:4,a:7},md:{m:3,a:6},ls:{m:6,a:8},lw:{m:2,a:7},fl:{m:1,a:5},ft:{m:7,a:10},po:{m:2,a:5},a1:{m:3,a:6}}},
+  {id:3,n:'אריאל בן-דוד',age:'no',av:'אב',bg:'#7C2D12',tc:'#FCD34D',injured:true,present:false,
+   s:{tc:{m:6,a:12},td:{m:4,a:9},mc:{m:7,a:11},md:{m:5,a:9},ls:{m:8,a:10},lw:{m:4,a:9},fl:{m:3,a:7},ft:{m:9,a:12},po:{m:5,a:9},a1:{m:5,a:9}}},
+];
+
+const SHOOT_T=[
+  {k:'tc',l:'שלשה מתפיסה'},{k:'td',l:'שלשה מכדרור'},
+  {k:'mc',l:'חצי מתפיסה'},{k:'md',l:'Pull-Up Mid'},
+  {k:'ls',l:'יד חזקה'},{k:'lw',l:'יד חלשה'},
+  {k:'fl',l:'Floater'},{k:'ft',l:'עונשין'},
+  {k:'po',l:'Post'},{k:'a1',l:'And-1'},
+];
+
+const PLAYS=[
+  {id:1,ti:'Horns Set',sub:'2 בגים בקו עליון',
+   dots:[{x:50,y:82,c:'#FF5E14'},{x:28,y:58,c:'#3B82F6'},{x:72,y:58,c:'#3B82F6'},{x:18,y:28,c:'#22C55E'},{x:82,y:28,c:'#22C55E'}],
+   arrows:[[50,82,28,58],[50,82,72,58],[28,58,18,28]]},
+  {id:2,ti:'Baseline BLOB',sub:'Double Screen מקו תחתון',
+   dots:[{x:50,y:92,c:'#FF5E14'},{x:28,y:68,c:'#3B82F6'},{x:50,y:68,c:'#3B82F6'},{x:72,y:68,c:'#22C55E'},{x:88,y:44,c:'#A78BFA'}],
+   arrows:[[72,68,88,44],[50,92,88,44]]},
+  {id:3,ti:'Spain P&R',sub:'P&R עם מסיך שני מאחור',
+   dots:[{x:50,y:78,c:'#FF5E14'},{x:24,y:52,c:'#3B82F6'},{x:52,y:52,c:'#3B82F6'},{x:18,y:28,c:'#22C55E'},{x:76,y:28,c:'#22C55E'}],
+   arrows:[[50,78,52,52],[52,52,24,30],[24,30,18,28]]},
+  {id:4,ti:'Zipper Action',sub:'חתכה מהצבע לAWK',
+   dots:[{x:50,y:80,c:'#FF5E14'},{x:50,y:55,c:'#3B82F6'},{x:22,y:45,c:'#22C55E'},{x:78,y:45,c:'#22C55E'},{x:50,y:25,c:'#A78BFA'}],
+   arrows:[[50,55,50,25],[50,80,50,55]]},
+];
+
+const SETTINGS=[
+  {k:'sound',l:'צלילי טיימר',v:true},{k:'vibrate',l:'רטט בסיום',v:true},
+  {k:'rtl',l:'כיוון ימין לשמאל',v:true},{k:'darkMode',l:'מצב כהה',v:true},
+  {k:'autoNext',l:'מעבר אוטומטי תרגיל',v:false},
+];
+
+/* ======================================================
+   STATE
+   ====================================================== */
+let selAge='all', selCat='all', drillTab='browse';
+let plan=[], favs=new Set(), recentDrills=[], userVideos=[];
+let timerTotal=300, timerLeft=300, timerRunning=false, timerIv=null;
+let intervalWork=30, intervalRest=15, intervalRounds=8, intervalState=null;
+let settings={sound:true,vibrate:true,rtl:true,darkMode:true,autoNext:false};
+let modalOpen=false;
+
+/* ======================================================
+   INIT
+   ====================================================== */
+document.addEventListener('DOMContentLoaded',()=>{
+  buildAgeRow(); buildCatRow();
+  renderDrills(); renderPlayers();
+  renderPlaybook(); renderPresence();
+  renderCalendar(); renderCatBars(); renderTopPlayer();
+  renderWellness(); renderSettings();
+  updatePlanBadge();
+});
+
+/* ======================================================
+   AGE / CAT
+   ====================================================== */
+function buildAgeRow(){
+  let h=`<div class="chip on" onclick="setAge('all',this)">הכל</div>`;
+  AGE_CATS.forEach(a=>h+=`<div class="chip" onclick="setAge('${a.id}',this)">${a.label}</div>`);
+  document.getElementById('ageRow').innerHTML=h;
+}
+function buildCatRow(){
+  document.getElementById('catRow').innerHTML=CATS.map(c=>`<div class="chip bl${c.id==='all'?' on':''}" onclick="setCat('${c.id}',this)">${c.l}</div>`).join('');
+}
+function setAge(id,el){
+  selAge=id;
+  document.querySelectorAll('#ageRow .chip').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  const info=document.getElementById('ageInfo');
+  if(id==='all'){info.style.display='none';}
+  else{const a=AGE_CATS.find(x=>x.id===id);info.textContent=`⛹ כדור ${a.ball} | סל ${a.hoop} — ${a.desc}`;info.style.display='block';}
+  renderDrills(); renderAiBox();
+}
+function setCat(id,el){
+  selCat=id;
+  document.querySelectorAll('#catRow .chip').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  renderDrills();
+}
+
+/* ======================================================
+   AI SUGGESTIONS
+   ====================================================== */
+function renderAiBox(){
+  const el=document.getElementById('aiBox');
+  if(selAge==='all'){el.innerHTML='';return;}
+  const pool=DRILLS.filter(d=>d.a.includes(selAge)&&!plan.some(p=>p.id===d.id));
+  if(!pool.length){el.innerHTML='';return;}
+  const picks=pool.slice(0,3);
+  el.innerHTML=`<div class="ai-box">
+    <div class="ai-title"><i class="ti ti-sparkles"></i> המלצות AI לגיל זה</div>
+    ${picks.map(d=>`<div class="ai-item">
+      <div class="ai-item-info"><div class="ai-item-name">${d.n}</div><div class="ai-item-sub">${d.t[0]} · ${d.dur} דק' · ${['מתחיל','בינוני','מתקדם'][d.lv]}</div></div>
+      <button class="ai-add" onclick="togglePlan(${d.id});renderAiBox()">+ הוסף</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ======================================================
+   DRILLS
+   ====================================================== */
+function renderDrills(){
+  const q=(document.getElementById('srch').value||'').trim().toLowerCase();
+  let f=DRILLS.filter(d=>{
+    const ao=selAge==='all'||d.a.includes(selAge);
+    const co=selCat==='all'||d.c===selCat;
+    const qo=!q||d.n.includes(q)||d.d.includes(q)||d.t.some(t=>t.toLowerCase().includes(q));
+    return ao&&co&&qo;
+  });
+  const el=document.getElementById('drillList');
+  if(!f.length){el.innerHTML='<div class="empty">לא נמצאו תרגילים 🔍</div>';return;}
+  el.innerHTML=f.map(d=>drillCardHTML(d,q)).join('');
+  renderAiBox();
+}
+function drillCardHTML(d,q=''){
+  const inP=plan.some(p=>p.id===d.id);
+  const isFav=favs.has(d.id);
+  const LVLS=['מתחיל','בינוני','מתקדם'];
+  const ageL=d.a.slice(0,3).map(ai=>{const ag=AGE_CATS.find(x=>x.id===ai);return ag?`<div class="dtag age">${ag.label}</div>`:''}).join('');
+  return `<div class="dcard">
+    <div class="dcard-top">
+      <div class="dcard-name" onclick="openDrill(${d.id})">${hl(d.n,q)}</div>
+      <div class="lv lv${d.lv}">${LVLS[d.lv]}</div>
+    </div>
+    <div class="dtags">${d.t.map(t=>`<div class="dtag${t.includes('קרוס')||t.includes('ספורט')?' cross':''}">${t}</div>`).join('')}${ageL}</div>
+    <div class="ddesc">${hl(d.d,q)}</div>
+    <div class="dfoot">
+      <div class="dstats">
+        <div class="dst"><i class="ti ti-clock" style="font-size:11px"></i><strong>${d.dur}</strong>דק'</div>
+        <div class="dst"><i class="ti ti-users" style="font-size:11px"></i><strong>${d.p}</strong></div>
+      </div>
+      <div class="dbtn-row">
+        <button class="btn-fav${isFav?' on':''}" onclick="toggleFav(${d.id})" aria-label="מועדף"><i class="ti ti-star"></i></button>
+        <button class="btn-add${inP?' on':''}" onclick="togglePlan(${d.id})">${inP?'✓ במערך':'+ הוסף'}</button>
+        <button class="btn-view" onclick="openDrill(${d.id})">פרטים</button>
+      </div>
+    </div>
+  </div>`;
+}
+function hl(text,q){
+  if(!q)return text;
+  const re=new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi');
+  return text.replace(re,'<span class="hl">$1</span>');
+}
+
+/* ======================================================
+   DRILL DETAIL MODAL
+   ====================================================== */
+function openDrill(id){
+  const d=DRILLS.find(x=>x.id===id);
+  if(!d)return;
+  // add to recent
+  recentDrills=recentDrills.filter(r=>r!==id);
+  recentDrills.unshift(id);
+  if(recentDrills.length>10)recentDrills.pop();
+  const LVLS=['מתחיל','בינוני','מתקדם'];
+  const ageL=d.a.map(ai=>{const ag=AGE_CATS.find(x=>x.id===ai);return ag?ag.label:''}).filter(Boolean).join(', ');
+  const isFav=favs.has(d.id);
+  document.getElementById('modalInner').innerHTML=`
+    <div class="mh">
+      <div><div class="mt">${d.n}</div><div class="ms">${LVLS[d.lv]} · ${ageL}</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="btn-fav${isFav?' on':''}" onclick="toggleFav(${d.id});openDrill(${d.id})" aria-label="מועדף"><i class="ti ti-star"></i></button>
+        <button class="mcls" onclick="closeModal()"><i class="ti ti-x"></i></button>
+      </div>
+    </div>
+    <a href="https://youtube.com/results?search_query=${encodeURIComponent(d.n+' basketball drill')}" target="_blank" class="vthmb">
+      <i class="ti ti-brand-youtube"></i><span>חפש סרטון ב-YouTube →</span>
+    </a>
+    <div class="ml">תיאור</div>
+    <div class="mv">${d.d}</div>
+    <div class="ml">שלבי ביצוע</div>
+    <ol class="slist">${d.s.map(s=>`<li>${s}</li>`).join('')}</ol>
+    <div class="ml">הערות מאמן אישיות</div>
+    <textarea class="ntarea" id="drillNote" placeholder="הערות לשחקן..."></textarea>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+      <button class="btn-pri" style="margin:0" onclick="setTimerFromDrill(${d.dur})"><i class="ti ti-clock"></i> טיימר ${d.dur}′</button>
+      <button class="btn-sec" style="margin:0" onclick="togglePlan(${d.id});renderDrillBtn(${d.id})">${plan.some(p=>p.id===d.id)?'הסר ממערך':'+ מערך'}</button>
+    </div>`;
+  openModal();
+}
+function renderDrillBtn(id){
+  // update button text after toggle
+  const inP=plan.some(p=>p.id===id);
+  const btns=document.querySelectorAll('#modalInner .btn-sec');
+  if(btns[0])btns[0].textContent=inP?'הסר ממערך':'+ מערך';
+}
+
+/* ======================================================
+   FAVORITES / RECENT
+   ====================================================== */
+function toggleFav(id){
+  if(favs.has(id))favs.delete(id); else favs.add(id);
+  renderDrills();
+  if(drillTab==='favorites')renderFavs();
+}
+function renderFavs(){
+  const el=document.getElementById('favList');
+  const f=DRILLS.filter(d=>favs.has(d.id));
+  el.innerHTML=f.length?f.map(d=>drillCardHTML(d)).join(''):'<div class="empty">אין מועדפים עדיין — לחץ ⭐ על תרגיל</div>';
+}
+function renderRecent(){
+  const el=document.getElementById('recentList');
+  const f=recentDrills.map(id=>DRILLS.find(d=>d.id===id)).filter(Boolean);
+  el.innerHTML=f.length?f.map(d=>drillCardHTML(d)).join(''):'<div class="empty">עדיין לא נצפו תרגילים</div>';
+}
+function setDrillTab(t,el){
+  drillTab=t;
+  document.querySelectorAll('.ntab').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  ['Browse','Favorites','Recent'].forEach(x=>document.getElementById('drill'+x).style.display='none');
+  document.getElementById('drill'+t.charAt(0).toUpperCase()+t.slice(1)).style.display='block';
+  if(t==='favorites')renderFavs();
+  if(t==='recent')renderRecent();
+}
+
+/* ======================================================
+   PLAN
+   ====================================================== */
+function togglePlan(id){
+  const idx=plan.findIndex(p=>p.id===id);
+  if(idx>=0){plan.splice(idx,1);}
+  else{const d=DRILLS.find(x=>x.id===id);if(d)plan.push({id:d.id,n:d.n,dur:d.dur,a:d.a});}
+  updatePlan(); renderDrills(); updatePlanBadge();
+}
+function updatePlan(){
+  const el=document.getElementById('planItems');
+  const pt=document.getElementById('planTotal');
+  if(!plan.length){
+    el.innerHTML='<div class="plan-empty">הוסף תרגילים מהרשימה לבנות מערך</div>';
+    pt.style.display='none';
+    updateCurDrill(); return;
+  }
+  const tot=plan.reduce((s,p)=>s+p.dur,0);
+  el.innerHTML=plan.map((p,i)=>{
+    const al=p.a.slice(0,2).map(ai=>{const ag=AGE_CATS.find(x=>x.id===ai);return ag?ag.label:''}).filter(Boolean).join(', ');
+    return `<div class="plan-item">
+      <div class="pnum">${i+1}</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--txt)">${p.n}</div><div style="font-size:10px;color:var(--mut)">${al}</div></div>
+      <div class="plan-dur"><input type="number" value="${p.dur}" min="1" max="90" onchange="updDur(${p.id},this.value)"><span style="font-size:10px;color:var(--mut)">′</span></div>
+      <button class="plan-rm" onclick="togglePlan(${p.id})" aria-label="הסר"><i class="ti ti-x"></i></button>
+    </div>`;
+  }).join('');
+  pt.style.display='block';
+  pt.innerHTML=`<strong style="color:var(--txt)">${plan.length} תרגילים</strong> · <strong style="color:var(--or)">${tot} דקות</strong> · <span>≈ ${Math.round(tot/60*10)/10} שעות</span>`;
+  updateCurDrill(); renderPresence();
+}
+function updDur(id,v){const p=plan.find(x=>x.id===id);if(p)p.dur=parseInt(v)||5;updatePlan();}
+function clearPlan(){if(plan.length&&confirm('לנקות מערך?')){plan=[];updatePlan();renderDrills();updatePlanBadge();}}
+function copyPlan(){
+  if(!plan.length){toast('המערך ריק');return;}
+  const txt='🏀 HoopMaster מערך:\n'+plan.map((p,i)=>`${i+1}. ${p.n} (${p.dur} דק')`).join('\n');
+  navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>toast('הועתק ✓'));
+}
+function sharePlan(){if(!plan.length){toast('המערך ריק');return;}toast('שיתוף בקרוב...');}
+function exportPDF(){toast('מייצא PDF...');}
+function updatePlanBadge(){
+  const b=document.getElementById('planBadge');
+  b.style.display=plan.length?'inline':'none';
+  b.textContent=`מערך: ${plan.length}`;
+}
+
+/* ======================================================
+   PRESENCE
+   ====================================================== */
+function renderPresence(){
+  const el=document.getElementById('presenceList');
+  el.innerHTML=`<div style="font-size:11px;color:var(--mut);margin-bottom:6px">סמן נוכחות:</div>`+
+    PLAYERS.map(p=>`<div class="pres-row">
+      <div class="pres-name">${p.n} ${p.injured?'<span class="inj-badge inj-y">פצוע</span>':''}</div>
+      <div class="pres-chk${p.present?' on':''}" onclick="togglePresence(${p.id})">${p.present?'✓':''}</div>
+    </div>`).join('');
+}
+function togglePresence(id){const p=PLAYERS.find(x=>x.id===id);if(p){p.present=!p.present;renderPresence();}}
+
+/* ======================================================
+   TIMER
+   ====================================================== */
+function updateTimerDisplay(){
+  const m=Math.floor(timerLeft/60), s=timerLeft%60;
+  document.getElementById('timerDig').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  const frac=timerTotal>0?timerLeft/timerTotal:0;
+  const circ=553;
+  document.getElementById('timerArc').setAttribute('stroke-dashoffset',String(Math.round(circ*(1-frac))));
+  document.getElementById('timerArc').setAttribute('stroke',timerLeft<=10&&timerRunning?'var(--red2)':'var(--or)');
+}
+function toggleTimer(){
+  if(timerRunning)stopTimer(); else startTimer();
+}
+function startTimer(){
+  if(timerLeft<=0)return;
+  timerRunning=true;
+  const btn=document.getElementById('timerBtn');
+  btn.className='tbtn stop'; btn.innerHTML='<i class="ti ti-player-pause"></i> עצור';
+  timerIv=setInterval(()=>{
+    timerLeft--;
+    updateTimerDisplay();
+    if(timerLeft<=0){
+      stopTimer();
+      document.getElementById('timerSub').textContent='⏱ הזמן נגמר!';
+      if(settings.sound){try{const ctx=new AudioContext();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;g.gain.setValueAtTime(.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.5);o.start();o.stop(ctx.currentTime+.5);}catch(e){}}
+    }
+  },1000);
+}
+function stopTimer(){
+  clearInterval(timerIv); timerRunning=false;
+  const btn=document.getElementById('timerBtn');
+  btn.className='tbtn start'; btn.innerHTML='<i class="ti ti-player-play"></i> המשך';
+}
+function resetTimer(){
+  stopTimer(); timerLeft=timerTotal; updateTimerDisplay();
+  document.getElementById('timerSub').textContent='מוכן';
+  const btn=document.getElementById('timerBtn');
+  btn.innerHTML='<i class="ti ti-player-play"></i> התחל';
+}
+function setPreset(m,el){
+  document.querySelectorAll('.preset').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  timerTotal=m*60; timerLeft=m*60;
+  if(timerRunning)stopTimer();
+  updateTimerDisplay();
+  document.getElementById('timerSub').textContent=`${m} דקות`;
+}
+function setCustomTimer(){
+  const m=parseInt(document.getElementById('tMin').value)||0;
+  const s=parseInt(document.getElementById('tSec').value)||0;
+  timerTotal=m*60+s; timerLeft=timerTotal;
+  if(timerRunning)stopTimer();
+  updateTimerDisplay();
+  document.getElementById('timerSub').textContent=`${m}:${String(s).padStart(2,'0')} מותאם`;
+}
+function setTimerFromDrill(mins){
+  timerTotal=mins*60; timerLeft=timerTotal;
+  if(timerRunning)stopTimer();
+  updateTimerDisplay();
+  document.getElementById('timerSub').textContent=`${mins} דקות`;
+  closeModal();
+  goPgById('timer');
+  toast(`טיימר ${mins} דקות מוכן`);
+}
+function updateCurDrill(){
+  const el=document.getElementById('curDrillBox');
+  if(plan.length){el.innerHTML=`<div class="cur-drill-name">${plan[0].n}</div><div style="font-size:11px;color:var(--mut)">${plan[0].dur} דקות · ${['מתחיל','בינוני','מתקדם'][DRILLS.find(d=>d.id===plan[0].id)?.lv||0]}</div>`;}
+  else{el.innerHTML='<div style="font-size:12px;color:var(--mut)">אין מערך — בנה מערך בטאב מערך</div>';}
+}
+// Interval
+let iIv=null,iState='idle',iRound=0,iPhase='work';
+function startInterval(){
+  intervalWork=parseInt(document.getElementById('iWork').value)||30;
+  intervalRest=parseInt(document.getElementById('iRest').value)||15;
+  intervalRounds=parseInt(document.getElementById('iRounds').value)||8;
+  clearInterval(iIv); iRound=0; iPhase='work';
+  runIPhase();
+}
+function runIPhase(){
+  if(iRound>=intervalRounds){document.getElementById('intervalStatus').textContent='✓ Interval הסתיים!';return;}
+  const dur=iPhase==='work'?intervalWork:intervalRest;
+  let left=dur;
+  document.getElementById('intervalStatus').textContent=`סט ${iRound+1}/${intervalRounds} — ${iPhase==='work'?'עבודה ⚡':'מנוחה 💤'} (${left}שנ')`;
+  iIv=setInterval(()=>{
+    left--;
+    document.getElementById('intervalStatus').textContent=`סט ${iRound+1}/${intervalRounds} — ${iPhase==='work'?'עבודה ⚡':'מנוחה 💤'} (${left}שנ')`;
+    if(left<=0){
+      clearInterval(iIv);
+      if(iPhase==='work'){iPhase='rest';}
+      else{iPhase='work';iRound++;}
+      runIPhase();
+    }
+  },1000);
+}
+
+/* ======================================================
+   PLAYERS
+   ====================================================== */
+function renderPlayers(){
+  const el=document.getElementById('playerList');
+  document.getElementById('sTotalPlayers').textContent=PLAYERS.length;
+  el.innerHTML=PLAYERS.map(p=>{
+    const vals=Object.values(p.s);
+    const tm=vals.reduce((s,x)=>s+x.m,0), ta=vals.reduce((s,x)=>s+x.a,0);
+    const pct=ta?Math.round(tm/ta*100):0;
+    const col=pct>=50?'var(--green2)':pct>=35?'var(--gold)':'var(--red2)';
+    const ag=AGE_CATS.find(x=>x.id===p.age);
+    return `<div class="pcard" onclick="openPlayer(${p.id})">
+      <div class="pcard-top">
+        <div class="pav" style="background:${p.bg};color:${p.tc}">${p.av}</div>
+        <div style="flex:1"><div class="pn">${p.n} <span class="inj-badge ${p.injured?'inj-y':'inj-n'}">${p.injured?'פצוע':'כשיר'}</span></div><div class="ps">${ag?ag.label:''} · כדור ${ag?ag.ball:'?'}</div></div>
+        <div class="ppct"><div class="ppct-v" style="color:${col}">${pct}%</div><div class="ppct-l">כללי</div></div>
+      </div>
+      <div class="pbar"><div class="pbar-fill" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+}
+function openPlayer(id){
+  const p=PLAYERS.find(x=>x.id===id);
+  document.getElementById('modalInner').innerHTML=`
+    <div class="mh"><div><div class="mt">${p.n} — אחוזי קליעה</div><div class="ms">עדכן מכניסה/ניסיון</div></div>
+    <button class="mcls" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+    <div style="display:flex;gap:6px;margin-bottom:10px">
+      <button class="btn-sm" style="background:${p.injured?'#14532D':'#7F1D1D'};color:${p.injured?'#86EFAC':'#FCA5A5'}" onclick="toggleInj(${p.id})">${p.injured?'✓ החזר לכשיר':'סמן פצוע'}</button>
+      <button class="btn-sm" style="background:${p.present?'#14532D':'var(--card3)'};color:${p.present?'#86EFAC':'var(--mut)'}" onclick="togglePresenceP(${p.id})">${p.present?'✓ נוכח':'סמן נוכח'}</button>
+    </div>
+    <div class="shoot-grid">${buildSG(p)}</div>
+    <button class="btn-pri" onclick="savePlayer(${p.id})"><i class="ti ti-device-floppy"></i>  שמור נתונים</button>`;
+  openModal();
+}
+function buildSG(p){
+  return SHOOT_T.map(t=>{
+    const s=p.s[t.k]; const pct=s.a?Math.round(s.m/s.a*100):0;
+    const col=pct>=50?'var(--green2)':pct>=35?'var(--gold)':'var(--red2)';
+    return `<div class="sg-c"><div class="sg-l">${t.l}</div><div class="sg-r">
+      <input class="sg-i" id="sg_${p.id}_${t.k}_m" type="number" min="0" value="${s.m}" onchange="calcSG(${p.id},'${t.k}')">
+      <span style="color:var(--mut);font-size:10px">/</span>
+      <input class="sg-i" id="sg_${p.id}_${t.k}_a" type="number" min="0" value="${s.a}" onchange="calcSG(${p.id},'${t.k}')">
+      <div id="sg_${p.id}_${t.k}_p" class="sg-p" style="color:${col}">${pct}%</div>
+    </div></div>`;
+  }).join('');
+}
+function calcSG(pid,k){
+  const m=parseInt(document.getElementById(`sg_${pid}_${k}_m`).value)||0;
+  const a=parseInt(document.getElementById(`sg_${pid}_${k}_a`).value)||0;
+  const pct=a?Math.round(m/a*100):0;
+  const el=document.getElementById(`sg_${pid}_${k}_p`);
+  el.textContent=pct+'%';
+  el.style.color=pct>=50?'var(--green2)':pct>=35?'var(--gold)':'var(--red2)';
+}
+function savePlayer(pid){
+  const p=PLAYERS.find(x=>x.id===pid);
+  SHOOT_T.forEach(t=>{
+    p.s[t.k].m=parseInt(document.getElementById(`sg_${pid}_${t.k}_m`).value)||0;
+    p.s[t.k].a=parseInt(document.getElementById(`sg_${pid}_${t.k}_a`).value)||0;
+  });
+  closeModal(); renderPlayers(); toast('נשמר ✓');
+}
+function toggleInj(id){const p=PLAYERS.find(x=>x.id===id);if(p){p.injured=!p.injured;savePlayer(id);}}
+function togglePresenceP(id){const p=PLAYERS.find(x=>x.id===id);if(p){p.present=!p.present;openPlayer(id);}}
+function addPlayer(){
+  const n=prompt('שם השחקן:');if(!n)return;
+  const COLS=[{bg:'#1E3A5F',tc:'#93C5FD'},{bg:'#14532D',tc:'#86EFAC'},{bg:'#7C2D12',tc:'#FCD34D'},{bg:'#4C1D95',tc:'#DDD6FE'}];
+  const c=COLS[PLAYERS.length%COLS.length];
+  const def={m:0,a:0};
+  const s={};SHOOT_T.forEach(t=>s[t.k]={...def});
+  PLAYERS.push({id:Date.now(),n,age:'yb',av:n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),bg:c.bg,tc:c.tc,injured:false,present:true,s});
+  renderPlayers(); toast(`${n} נוסף ✓`);
+}
+
+/* ======================================================
+   WELLNESS
+   ====================================================== */
+function renderWellness(){
+  const items=[{icon:'⚡',l:'אנרגיה',v:7},{icon:'😴',l:'שינה',v:6},{icon:'🦵',l:'כאב',v:2}];
+  document.getElementById('wellnessRow').innerHTML=items.map((w,i)=>`
+    <div class="w-card" onclick="wellnessClick(${i})">
+      <div class="w-icon">${w.icon}</div>
+      <div class="w-val" id="wv${i}">${w.v}</div>
+      <div class="w-label">${w.l}</div>
+    </div>`).join('');
+}
+function wellnessClick(i){
+  const v=parseInt(prompt('דרג 1-10:','7'));
+  if(v>=1&&v<=10){document.getElementById('wv'+i).textContent=v;}
+}
+
+/* ======================================================
+   STATS
+   ====================================================== */
+function renderCatBars(){
+  const data=[{l:'קליעה',v:74},{l:'דריבל',v:58},{l:'הגנה',v:42},{l:'כושר',v:35},{l:'קבוצתי',v:61},{l:'קרוס',v:22},{l:'מנטאל',v:30}];
+  document.getElementById('catBars').innerHTML=data.map(d=>`
+    <div class="bar-row">
+      <div class="bar-lbl">${d.l}</div>
+      <div class="bar-tr"><div class="bar-fl" style="width:${d.v}%;background:var(--or)"></div></div>
+      <div class="bar-v">${d.v}%</div>
+    </div>`).join('');
+}
+function renderTopPlayer(){
+  const data=[{l:'שלשות',v:42,col:'var(--green2)'},{l:'עונשין',v:78,col:'var(--green2)'},{l:'Pull-Up',v:51,col:'var(--gold)'},{l:'יד חלשה',v:29,col:'var(--red2)'}];
+  document.getElementById('topPlayer').innerHTML=`<div style="font-size:11px;font-weight:700;color:var(--txt);margin-bottom:8px">יוסי כהן</div>`+
+    data.map(d=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bd)">
+      <span style="font-size:12px;color:var(--mut)">${d.l}</span>
+      <span style="font-size:13px;font-weight:700;color:${d.col}">${d.v}%</span>
+    </div>`).join('');
+}
+function renderCalendar(){
+  const el=document.getElementById('calGrid');
+  const types=['rest','trained','rest','game','trained','rest','trained','rest','rest','trained','rest','trained','rest','game','trained','rest','trained','rest','rest','trained','game','rest','trained','rest','trained','rest','rest','rest','trained','today'];
+  el.innerHTML=types.map((t,i)=>`<div class="cal-day ${t}" onclick="toast('יום ${i+1} — ${t==='trained'?'אימון':t==='game'?'משחק':t==='today'?'היום':'מנוחה'}')">${i+1}</div>`).join('');
+}
+
+/* ======================================================
+   PLAYBOOK
+   ====================================================== */
+function renderPlaybook(){
+  document.getElementById('playbookList').innerHTML=PLAYS.map(p=>`
+    <div class="play-card">
+      <div class="play-title">${p.ti}</div>
+      <div class="play-sub">${p.sub}</div>
+      <div class="court">
+        ${courtLines()}
+        <svg style="position:absolute;top:0;left:0;width:100%;height:100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <defs><marker id="arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="rgba(255,94,20,.7)"/></marker></defs>
+          ${p.arrows.map(([x1,y1,x2,y2])=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(255,94,20,.55)" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr)"/>`).join('')}
+        </svg>
+        ${p.dots.map((d,i)=>`<div style="position:absolute;left:${d.x}%;top:${d.y}%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:${d.c};display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;color:#fff">${i+1}</div>`).join('')}
+      </div>
+      <div style="display:flex;gap:5px;margin-top:7px">
+        <button class="btn-sm" style="background:var(--card2);color:var(--txt);border:1px solid var(--bd)" onclick="toast('עורך בקרוב!')"><i class="ti ti-edit"></i> ערוך</button>
+        <button class="btn-sm" style="background:var(--card2);color:var(--txt);border:1px solid var(--bd)" onclick="toast('הועתק ✓')"><i class="ti ti-copy"></i> העתק</button>
+      </div>
+    </div>`).join('');
+}
+function courtLines(){
+  return `<div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:rgba(255,255,255,.1)"></div>
+    <div style="position:absolute;left:25%;top:55%;width:50%;height:40%;border:1px solid rgba(255,255,255,.15);border-radius:50% 50% 0 0;clip-path:inset(0 0 50% 0)"></div>
+    <div style="position:absolute;left:30%;top:0;width:40%;height:1px;background:rgba(255,255,255,.12)"></div>`;
+}
+
+/* ======================================================
+   VIDEO LIST
+   ====================================================== */
+function addVideo(){
+  const url=document.getElementById('vidUrl').value.trim();
+  if(!url){toast('הכנס לינק');return;}
+  userVideos.push({url,title:'סרטון #'+(userVideos.length+1)});
+  document.getElementById('vidUrl').value='';
+  renderVideos(); toast('נוסף ✓');
+}
+function renderVideos(){
+  const el=document.getElementById('videoList');
+  if(!userVideos.length){el.innerHTML='';return;}
+  el.innerHTML=userVideos.map((v,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--bd)">
+    <i class="ti ti-brand-youtube" style="color:var(--or)"></i>
+    <a href="${v.url}" target="_blank" style="flex:1;font-size:12px;color:var(--blue2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${v.title}</a>
+    <button style="background:none;border:none;color:var(--red2);cursor:pointer;font-size:13px" onclick="userVideos.splice(${i},1);renderVideos()"><i class="ti ti-x"></i></button>
+  </div>`).join('');
+}
+
+/* ======================================================
+   SETTINGS
+   ====================================================== */
+function renderSettings(){
+  document.getElementById('settingsRows').innerHTML=SETTINGS.map(s=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd)">
+      <span style="font-size:13px;font-weight:600;color:var(--txt)">${s.l}</span>
+      <div style="width:42px;height:23px;background:${s.v?'var(--or)':'var(--bd)'};border-radius:12px;cursor:pointer;position:relative;transition:.2s" onclick="toggleSetting('${s.k}',this)">
+        <div style="position:absolute;top:2px;${s.v?'right:2px':'left:2px'};width:19px;height:19px;background:#fff;border-radius:50%;transition:.2s"></div>
+      </div>
+    </div>`).join('');
+}
+function toggleSetting(k,el){
+  const s=SETTINGS.find(x=>x.k===k);if(!s)return;
+  s.v=!s.v;settings[k]=s.v;
+  el.style.background=s.v?'var(--or)':'var(--bd)';
+  const thumb=el.querySelector('div');
+  if(s.v){thumb.style.right='2px';thumb.style.left='';}
+  else{thumb.style.left='2px';thumb.style.right='';}
+}
+
+/* ======================================================
+   NAVIGATION
+   ====================================================== */
+function goPg(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bnt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  el.classList.add('on');
+  // show/hide drill sub-tabs
+  document.getElementById('drillTabs').style.display=(id==='drills')?'flex':'none';
+  if(id==='players')renderPlayers();
+  if(id==='plan'){updatePlan();renderPresence();}
+  if(id==='stats'){renderCalendar();}
+  if(id==='more')renderPlaybook();
+  if(id==='timer')updateCurDrill();
+}
+function goPgById(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.bnt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  const bnt=document.getElementById('bnav-'+id);
+  if(bnt)bnt.classList.add('on');
+  document.getElementById('drillTabs').style.display=(id==='drills')?'flex':'none';
+}
+
+/* ======================================================
+   MODAL
+   ====================================================== */
+function openModal(){
+  document.getElementById('modalBg').classList.add('on');
+  modalOpen=true;
+}
+function closeModal(){
+  document.getElementById('modalBg').classList.remove('on');
+  modalOpen=false;
+}
+function handleModalBg(e){if(e.target===document.getElementById('modalBg'))closeModal();}
+
+/* ======================================================
+   TOAST
+   ====================================================== */
+function toast(msg){
+  const el=document.getElementById('toastEl');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2200);
+}
+</script>
+</body>
+</html>
